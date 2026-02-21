@@ -1,0 +1,263 @@
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --accent-color: #764ba2;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #f3f4f9;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Background Blurs */
+.bg-blur-circle-1 {
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    background: #667eea;
+    filter: blur(100px);
+    border-radius: 50%;
+    top: -100px;
+    right: -100px;
+    z-index: -1;
+    opacity: 0.2;
+}
+
+.bg-blur-circle-2 {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    background: #764ba2;
+    filter: blur(80px);
+    border-radius: 50%;
+    bottom: -50px;
+    left: -50px;
+    z-index: -1;
+    opacity: 0.15;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border-right: 1px solid var(--glass-border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.list-group-item {
+    background: transparent !important;
+    border: none !important;
+    padding: 12px 20px;
+    border-radius: 12px !important;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.list-group-item.active, .list-group-item:hover {
+    background: var(--primary-gradient) !important;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+}
+
+.list-group-item i {
+    margin-right: 12px;
+}
+
+/* Main Content Area */
+#page-content-wrapper {
+    flex: 1;
+    padding: 20px;
+}
+
+.page-title {
+    font-weight: 700;
+    color: #1a1a1a;
+}
+
+/* Glass Components */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+}
+
+.btn-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.btn-action {
+    background: var(--primary-gradient);
+    color: white;
+    border-radius: 10px;
+    width: 100%;
+    margin-top: 20px;
+    border: none;
+    padding: 12px;
+}
+
+/* Icon Design */
+.card-icon {
+    width: 100px;
+    height: 70px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.face-bg { background: #e0e7ff; color: #4338ca; }
+.eye-bg { background: #fef3c7; color: #b45309; }
+.voice-bg { background: #dcfce7; color: #15803d; }
+
+.insight-card {
+    background: var(--primary-gradient) !important;
+}
+
+.chart-placeholder {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.02);
+    border-radius: 20px;
+}
+.glass-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    background: rgba(187, 229, 170, 0.9);
+}
+/* 1. Parent stretch kara */
+.row {
+    display: flex; 
+}
+
+/* 2. Column la flex banva jyamule aatla card height gheil */
+.col {
+    display: flex;
+}
+
+/* 3. Card la automatic height ani spacing dya */
+.glass-card {
+    height: 100%;           /* Purna unchi ghene */
+    width: 100%;            /* Purna rundi ghene */
+    display: flex;          /* Aatla content flex kara */
+    flex-direction: column; /* Content ubha theva */
+    justify-content: space-between; /* Button la bottom la ढकला */
+}
+
+/* Glass Card sathi Best Shadow Logic */
+.glass-card {
+    /* Khali 3 layers aahet */
+    box-shadow: 
+        0 4px 6px rgba(10, 9, 9, 0.02),    /* 1. Barik shadow (Depth sathi) */
+        0 10px 15px rgba(0, 0, 0, 0.05),   /* 2. Madhyam shadow (Lift sathi) */
+        0 20px 25px rgba(0, 0, 0, 0.03);   /* 3. Soft shadow (Blur sathi) */
+}
+
+
+Modal background blur karnyathi
+.modal-backdrop {
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.modal-content {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+/* --- Game Modal Premium Styling --- */
+
+/* Modal cha background blur karnyathi */
+.modal-backdrop {
+    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Modal Content Glass Effect */
+#gameModal .modal-content {
+    background: rgba(255, 255, 255, 0.05) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+/* Modal Header Styling */
+#gameModal .modal-header {
+    background: rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.2rem;
+}
+
+#gameModal .modal-title {
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Custom Scrollbar for iframe area if needed */
+#gameModal .modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+#gameModal .modal-body::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
+
+/* Close Button Effect */
+#gameModal .btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%);
+    transition: transform 0.3s ease;
+}
+
+#gameModal .btn-close-white:hover {
+    transform: rotate(90deg);
+}
+
+Animation for Modal Popup
+.modal.fade .modal-dialog {
+    transform: scale(0.8);
+    transition: transform 0.3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: scale(1);
+}

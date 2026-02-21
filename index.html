@@ -1,0 +1,310 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindTracker AI Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="login-container d-flex justify-content-center align-items-center vh-100">
+        
+        <div class="card login-card shadow-lg p-4">
+            <div class="language-selector text-end text-muted small">English (United States) ▼</div>
+            
+            <div class="card-body">
+                <h1 class="app-name text-center mb-4">MindTracker AI</h1>
+                
+                <form class="login-form" action="dashboard.html" method="GET"> 
+                    
+                    <div class="mb-3">
+                        <input type="text" class="form-control" placeholder="Phone number, email or username" required>
+                    </div>
+                    
+                    <div class="mb-3 input-group password-group">
+                        <input type="password" class="form-control" placeholder="Password" required>
+                        <span class="input-group-text password-toggle">&#128065;</span> 
+                    </div>
+
+                    <button type="submit" class="btn btn-primary login-button w-100 mb-3">Log in</button>
+                </form>
+
+                <div class="login-help text-center small mb-3">
+                    Forgot your login details? 
+                    <a href="#" class="help-link">Get help logging in.</a>
+                </div>
+                
+                <div class="separator-or d-flex align-items-center my-3">
+                    <span class="line flex-grow-1"></span>
+                    <span class="mx-3 text-muted small fw-bold">OR</span>
+                    <span class="line flex-grow-1"></span>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    
+    <div class="signup-footer fixed-bottom text-center py-3 bg-white border-top">
+        Don't have an account? 
+        <a href="#" class="signup-link fw-bold">Sign up.</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindTrackAI - Premium Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+<script defer src="script.js"></script>
+    <style>
+        .feature-section { display: none; }
+        video { width: 100%; max-width: 500px; border-radius: 15px; background: #000; }
+        .result-box { margin-top: 15px; padding: 15px; border-radius: 10px; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        
+        /* Fixed Grid and Card Sizing */
+        .glass-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blur-circle-1"></div>
+    <div class="bg-blur-circle-2"></div>
+
+    <div class="d-flex" id="wrapper">
+        
+        <div class="sidebar" id="sidebar-wrapper">
+            <div class="sidebar-header">
+                <i class="fas fa-brain"></i>
+                <span>MindTrackAI</span>
+            </div>
+            <div class="list-group list-group-flush" id="main-nav">
+                <a href="#" class="list-group-item active" onclick="showDashboard()">
+                    <i class="fas fa-th-large"></i> Dashboard
+                </a>
+                <a href="#" class="list-group-item" id="nav-emotion">
+                    <i class="fas fa-smile"></i> Emotion Detection
+                </a>
+                <a href="#" class="list-group-item">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="setting.html" class="list-group-item mt-auto border-top">
+                    <i class="fas fa-cog"></i> Settings
+                </a>
+            </div>
+        </div>
+        
+
+
+
+
+
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg px-4 mb-4">
+                <div class="container-fluid">
+                    <h2 class="page-title" id="active-feature-name"> Dashboard</h2>
+                    <div class="d-flex align-items-center ms-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-glass dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-2"></i> Sign In / Sign Up
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Sign Up</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="container-fluid px-4">
+                
+                <div id="dashboard-content" class="row g-4">
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon face-bg"><i class="fas fa-user-check"></i></div>
+                                <h3>Face Detection</h3>
+                                <p>Real-time facial analysis and expression tracking.</p>
+                            </div>
+                       <button class="btn btn-action w-100" onclick="openFeature('face-section', 'Face Detection')">Try Feature</button>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon eye-bg"><i class="fas fa-eye"></i></div>
+                                <h3>Eye Tracking</h3>
+                                <p>Advanced gaze detection and focus analysis.</p>
+                            </div>
+                      <button class="btn btn-action w-100" onclick="openFeature('eye-section', 'Eye Tracking')">Try Feature</button>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-microphone-lines"></i></div>
+                                <h3>Voice Detection</h3>
+                                <p>Tone recognition and speech pattern detection.</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="openFeature('voice-section', 'Voice Detection')">Try Feature</button>
+
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-file-alt"></i></div>
+                                <h3>Text Analysis</h3>
+                                <p>Scan written content for emotional cues.</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="openFeature('text-section', 'Text Analysis')">Try Feature</button>
+                            </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-vial"></i></div>
+                                <h3>Real-Time Experiment</h3>
+                                <p>Run live productivity challenges with feedback.</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="window.location.href='realtime-expression.html'">Try Feature</button>
+                        </div>
+                    </div>
+                     <div class="col-xl-4 col-md-6">
+    <div class="glass-card">
+        <div>
+            <div class="card-icon voice-bg"><i class="fas fa-microphone-lines"></i></div>
+            <h3>Whatsapp Text</h3>
+            <p>Redundant tone recognition module.</p>
+        </div>
+        <button class="btn btn-action w-100" onclick="window.location.href='whatsapp-analysis.html'">Try Feature</button>
+    </div>
+</div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-chart-line"></i></div>
+                                <h3>Daily Mood Graph</h3>
+                                <p>Track your mood changes throughout the day.</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="openFeature('text-section', 'Text Analysis')">Try Feature</button>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-calendar-week"></i></div>
+                                <h3>Weekly Mood Graph</h3>
+                                <p>Analyze your weekly emotional trends.</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="window.location.href='weekly-graph.html'">Try Feature</button>
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-microphone-lines"></i></div>
+                                <h3>Ai Suggesion Box</h3>
+                                <p>Tone recognition and speech pattern detection.</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="openFeature('voice-section', 'Emotion Detection')">Try Feature</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="face-section" class="feature-section glass-card p-5 text-center">
+                   <video id="video" autoplay></video>
+                    <canvas id="canvas" hidden></canvas>
+                    <div id="face-result" class="result-box">Waiting for camera...</div>
+                    <div class="mt-4">
+                        <button id="start-camera" class="btn btn-success me-2">Start Camera</button>
+                        <button id="stop-camera" class="btn btn-danger me-2" disabled>Stop</button>
+                        <button class="btn btn-secondary" onclick="showDashboard()">Back to Dashboard</button>
+                    </div>
+                </div>
+
+                <div id="eye-section" class="feature-section glass-card p-5 text-center">
+                    <video id="eye-video" autoplay></video>
+                    <div id="eye-result" class="result-box">Ready to track eyes...</div>
+                    <div class="mt-4">
+                        <button id="start-eye-camera" class="btn btn-success me-2">Start Eye Tracking</button>
+                        <button id="stop-eye-camera" class="btn btn-danger me-2" disabled>Stop</button>
+                        <button class="btn btn-secondary" onclick="showDashboard()">Back to Dashboard</button>
+                    </div>
+                </div>
+
+                <div id="voice-section" class="feature-section glass-card p-5 text-center">
+                    <div id="voice-result" class="result-box mb-4">Press 'Start' and speak...</div>
+                    <div class="mt-4">
+                        <button id="start-voice" class="btn btn-success me-2">Start Listening</button>
+                        <button id="stop-voice" class="btn btn-danger me-2" disabled>Stop</button>
+                        <button class="btn btn-secondary" onclick="showDashboard()">Back to Dashboard</button>
+                    </div>
+                </div>
+
+                <div id="text-section" class="feature-section glass-card p-5">
+                    <h3>Analyze Your Thoughts</h3>
+                    <textarea id="user-text-input" class="form-control mb-3 glass-input" rows="5" placeholder="Type how you feel today..."></textarea>
+                    <div id="text-result" class="result-box mb-3">Your analysis will appear here.</div>
+                    <button id="analyze-text-btn" class="btn btn-primary me-2">Analyze Text</button>
+                    <button class="btn btn-secondary" onclick="showDashboard()">Back to Dashboard</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+   
+    <script src="script.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+<div class="col-xl-4 col-md-6">
+                        <div class="glass-card">
+                            <div>
+                                <div class="card-icon voice-bg"><i class="fas fa-microphone-lines"></i></div>
+                                <h3>Ai Suggesion Box</h3>
+                                <p>Analyzing your mood to give the best suggestions...</p>
+                            </div>
+                            <button class="btn btn-action w-100" onclick="window.location.href='suggestion.html'">View</button>
+                            <button class="btn btn-action w-100" onclick="window.location.href='game.html'">Play Game</button>
+                        </div>
+                    </div>
+                </div>
