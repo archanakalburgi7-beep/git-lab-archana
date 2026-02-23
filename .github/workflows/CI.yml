@@ -1,0 +1,11 @@
+name : display message on push
+
+on:
+  push:
+jobs:
+   show-message:
+      runs-on: ubantu-latest
+
+      steps:
+        -name:print message
+         run:echo "push detected. CI is running!! "
