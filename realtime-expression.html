@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Face Analysis - MindTracker AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+    <style>
+        :root { --primary: #00bcd4; --bg: #f8f9fa; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); }
+        .detection-container { max-width: 900px; margin: 30px auto; padding: 20px; background: #fff; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .video-wrapper { position: relative; width: 100%; height: 450px; background: #000; border-radius: 15px; overflow: hidden; display: flex; justify-content: center; }
+        video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        canvas { position: absolute; top: 0; left: 0; transform: scaleX(-1); pointer-events: none; }
+        .analysis-card { background: #fff; border-radius: 15px; padding: 20px; margin-top: 20px; border: 1px solid #eee; }
+        .progress { height: 12px; border-radius: 6px; background-color: #eee; margin-bottom: 15px; }
+        #loadingOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; z-index: 100; text-align: center; padding: 20px; }
+        .controls { display: flex; gap: 10px; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="detection-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a href="dashboard.html" class="btn btn-sm btn-outline-secondary">← Back</a>
+            <h2 class="fw-bold text-primary mb-0">Live Emotion Analysis</h2>
+            <div></div> </div>
+        
+        <div class="video-wrapper" id="wrapper">
+            <div id="loadingOverlay">
+                <div class="spinner-border text-info mb-3" role="status"></div>
+                <h5 id="statusText">Loading AI Models...</h5>
+            </div>
+            <video id="video" autoplay muted playsinline></video>
+        </div>
+
+        <div class="controls">
+            <button id="startBtn" class="btn btn-success w-100 fw-bold" disabled>START ANALYSIS</button>
+            <button id="stopBtn" class="btn btn-danger w-100 fw-bold">STOP ANALYSIS</button>
+        </div>
+
+        <div class="analysis-card">
+            <h5 class="fw-bold mb-3">Real-time Emotion Percentage:</h5>
+            <div id="emotionResults">
+                <p class="text-muted">Awaiting analysis...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const video = document.getElementById('video');
+    const statusText = document.getElementById('statusText');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const emotionResults = document.getElementById('emotionResults');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+
+    let analysisInterval = null;
+    let isAnalyzing = false;
+    let canvas = null;
+
+    // 1. Models Load Karne
+    async function init() {
+        try {
+            const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+            await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+            await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+            
+            statusText.innerText = "Starting Camera...";
+            startCamera();
+        } catch (err) {
+            statusText.innerHTML = "<span class='text-danger'>Error Loading Models!</span>";
+            console.error(err);
+        }
+    }
+
+    // 2. Camera Suru Karne
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            loadingOverlay.style.display = 'none';
+            toggleAnalysis(true);
+        } catch (err) {
+            statusText.innerHTML = "<span class='text-danger'>Camera Error!</span>";
+        }
+    }
+
+    // 3. Analysis Control (Start/Stop)
+    function toggleAnalysis(start) {
+        if (start && !isAnalyzing) {
+            isAnalyzing = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            
+            // Speed Kami Kela: 600ms (0.6 seconds)
+            analysisInterval = setInterval(runAnalysis, 600); 
+        } else {
+            isAnalyzing = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            clearInterval(analysisInterval);
+            if(canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+            emotionResults.innerHTML = '<p class="text-danger fw-bold">Analysis Paused.</p>';
+        }
+    }
+
+    async function runAnalysis() {
+        if (!video.paused && !video.ended) {
+            const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+                .withFaceExpressions();
+
+            if (canvas) {
+                const displaySize = { width: video.offsetWidth, height: video.offsetHeight };
+                faceapi.matchDimensions(canvas, displaySize);
+                const resizedDetections = faceapi.resizeResults(detections, displaySize);
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                faceapi.draw.drawDetections(canvas, resizedDetections);
+            }
+
+            if (detections.length > 0) {
+                renderExpressions(detections[0].expressions);
+            }
+        }
+    }
+
+    // 4. UI Display
+    function renderExpressions(expressions) {
+        const sorted = Object.entries(expressions).sort((a, b) => b[1] - a[1]);
+        let html = '';
+        sorted.forEach(([emo, val]) => {
+            const percent = Math.round(val * 100);
+            let color = 'bg-secondary';
+            if(emo === 'happy') color = 'bg-success';
+            if(emo === 'sad') color = 'bg-info';
+            if(emo === 'angry') color = 'bg-danger';
+            if(emo === 'surprised') color = 'bg-warning';
+
+            if(percent > 1) {
+                html += `
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between small fw-bold">
+                            <span class="text-uppercase">${emo}</span>
+                            <span>${percent}%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar ${color} progress-bar-striped progress-bar-animated" style="width: ${percent}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+        emotionResults.innerHTML = html;
+    }
+
+    // Canvas setup on play
+    video.addEventListener('play', () => {
+        if(!canvas) {
+            canvas = faceapi.createCanvasFromMedia(video);
+            document.getElementById('wrapper').append(canvas);
+        }
+    });
+
+    // Button Events
+    stopBtn.addEventListener('click', () => toggleAnalysis(false));
+    startBtn.addEventListener('click', () => toggleAnalysis(true));
+
+    init();
+</script>
+
+</body>
+</html>
